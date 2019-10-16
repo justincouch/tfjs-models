@@ -97,15 +97,49 @@ export function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
 /**
  * Draws a pose skeleton by looking up all adjacent keypoints/joints
  */
-export function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
-  const adjacentKeyPoints =
-      posenet.getAdjacentKeyPoints(keypoints, minConfidence);
+ export function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
+   keypoints.forEach( (kp, i) => {
+     let angle = undefined;
+     //console.log(i);
+     if ( i-1 > 0 && keypoints[i+1] != undefined ){
+       angle = find_angle( keypoints[i-1].position, keypoints[i].position, keypoints[i+1].position );
+     }
+     if ( angle!=undefined ){
+       //console.log(angle);
+       ctx.fillStyle = 'orange';
+       ctx.fillText( ( angle*(180/Math.PI) ).toFixed(2), keypoints[i].position.x, keypoints[i].position.y );
 
-  adjacentKeyPoints.forEach((keypoints) => {
-    drawSegment(
-        toTuple(keypoints[0].position), toTuple(keypoints[1].position), color,
-        scale, ctx);
-  });
+       ctx.beginPath();
+       ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
+       ctx.lineTo(keypoints[i-1].position.x, keypoints[i-1].position.y);
+       ctx.lineWidth = lineWidth;
+       ctx.strokeStyle = 'orange';
+       ctx.stroke();
+
+       ctx.beginPath();
+       ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
+       ctx.lineTo(keypoints[i+1].position.x, keypoints[i+1].position.y);
+       ctx.lineWidth = lineWidth;
+       ctx.strokeStyle = 'blue';
+       ctx.stroke();
+     }
+   });
+
+   const adjacentKeyPoints =
+       posenet.getAdjacentKeyPoints(keypoints, minConfidence);
+   //console.log(adjacentKeyPoints);
+   adjacentKeyPoints.forEach((keypoints, index) => {
+     drawSegment(
+         toTuple(keypoints[0].position), toTuple(keypoints[1].position), color,
+         scale, ctx);
+   });
+ }
+
+ export function find_angle(A,B,C) {
+    var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
+    var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2));
+    var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
+    return Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
 }
 
 /**
