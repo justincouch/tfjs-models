@@ -81,8 +81,8 @@ function drawResults(canvas, poses, minPartConfidence, minPoseConfidence) {
   });
 }
 
-const imageBucket =
-    'https://storage.googleapis.com/tfjs-models/assets/posenet/';
+const imageBucket = 'http://localhost:1234/assets/images/';
+    //'https://storage.googleapis.com/tfjs-models/assets/posenet/';
 
 async function loadImage(imagePath) {
   const image = new Image();
@@ -92,8 +92,9 @@ async function loadImage(imagePath) {
       resolve(image);
     };
   });
-
-  image.src = `${imageBucket}${imagePath}`;
+  console.log(imagePath);
+  //image.src = `${imageBucket}${imagePath}`;
+  image.src = `${imagePath}`;
   return promise;
 }
 
@@ -202,7 +203,7 @@ let guiState = {
     multiplier: defaultMobileNetMultiplier,
     quantBytes: defaultQuantBytes,
   },
-  image: 'tennis_in_crowd.jpg',
+  image: 'public/images/warrior-standing.jpg',
   multiPoseDetection: {
     minPartConfidence: 0.1,
     minPoseConfidence: 0.2,

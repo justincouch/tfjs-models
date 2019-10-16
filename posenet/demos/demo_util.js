@@ -94,36 +94,63 @@ export function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
   ctx.stroke();
 }
 
+function drawAngle( ctx, poseJoint ){
+  ctx.font = "24px serif";
+  ctx.fillStyle = 'red';
+  ctx.fillText( ( poseJoint.angle*(180/Math.PI) ).toFixed(2), poseJoint.position.x, poseJoint.position.y );
+
+  // ctx.beginPath();
+  // ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
+  // ctx.lineTo(keypoints[i-1].position.x, keypoints[i-1].position.y);
+  // ctx.lineWidth = lineWidth;
+  // ctx.strokeStyle = 'orange';
+  // ctx.stroke();
+  //
+  // ctx.beginPath();
+  // ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
+  // ctx.lineTo(keypoints[i+1].position.x, keypoints[i+1].position.y);
+  // ctx.lineWidth = lineWidth;
+  // ctx.strokeStyle = 'blue';
+  // ctx.stroke();
+}
+
 /**
  * Draws a pose skeleton by looking up all adjacent keypoints/joints
  */
  export function drawSkeleton(keypoints, minConfidence, ctx, scale = 1) {
-   keypoints.forEach( (kp, i) => {
-     let angle = undefined;
-     //console.log(i);
-     if ( i-1 > 0 && keypoints[i+1] != undefined ){
-       angle = find_angle( keypoints[i-1].position, keypoints[i].position, keypoints[i+1].position );
-     }
-     if ( angle!=undefined ){
-       //console.log(angle);
-       ctx.fillStyle = 'orange';
-       ctx.fillText( ( angle*(180/Math.PI) ).toFixed(2), keypoints[i].position.x, keypoints[i].position.y );
+   let scoreThreshold = minConfidence;
+   let poseObj = {};
+   poseObj.rightAnkle = keypoints.filter(obj => { return obj.part === "rightAnkle" })[0];
+   poseObj.leftAnkle = keypoints.filter(obj => { return obj.part === "leftAnkle" })[0];
+   poseObj.rightKnee = keypoints.filter(obj => { return obj.part === "rightKnee" })[0];
+   poseObj.leftKnee = keypoints.filter(obj => { return obj.part === "leftKnee" })[0];
+   poseObj.rightHip = keypoints.filter(obj => { return obj.part === "rightHip" })[0];
+   poseObj.leftHip = keypoints.filter(obj => { return obj.part === "leftHip" })[0];
+   poseObj.rightWrist = keypoints.filter(obj => { return obj.part === "rightWrist" })[0];
+   poseObj.leftWrist = keypoints.filter(obj => { return obj.part === "leftWrist" })[0];
+   poseObj.rightElbow = keypoints.filter(obj => { return obj.part === "rightElbow" })[0];
+   poseObj.leftElbow = keypoints.filter(obj => { return obj.part === "leftElbow" })[0];
+   poseObj.leftShoulder = keypoints.filter(obj => { return obj.part === "leftShoulder" })[0];
+   poseObj.rightShoulder = keypoints.filter(obj => { return obj.part === "rightShoulder" })[0];
 
-       ctx.beginPath();
-       ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
-       ctx.lineTo(keypoints[i-1].position.x, keypoints[i-1].position.y);
-       ctx.lineWidth = lineWidth;
-       ctx.strokeStyle = 'orange';
-       ctx.stroke();
+   if ( poseObj.rightShoulder.score > scoreThreshold && poseObj.rightHip.score > scoreThreshold && poseObj.rightElbow.score > scoreThreshold ){
+     poseObj.rightShoulder.angle = find_angle( poseObj.rightElbow.position, poseObj.rightShoulder.position, poseObj.rightHip.position );
+     drawAngle( ctx, poseObj.rightShoulder );
+   }
+   if ( poseObj.leftShoulder.score > scoreThreshold && poseObj.leftHip.score > scoreThreshold && poseObj.leftElbow.score > scoreThreshold ){
+     poseObj.leftShoulder.angle = find_angle( poseObj.leftElbow.position, poseObj.leftShoulder.position, poseObj.leftHip.position );
+     drawAngle( ctx, poseObj.leftShoulder );
+   }
+   if ( poseObj.leftElbow.score > scoreThreshold && poseObj.leftWrist.score > scoreThreshold && poseObj.leftHip.score > scoreThreshold ){
+     poseObj.leftElbow.angle = find_angle( poseObj.leftShoulder.position, poseObj.leftElbow.position, poseObj.leftWrist.position );
+     drawAngle( ctx, poseObj.leftElbow );
+   }
+   if ( poseObj.rightElbow.score > scoreThreshold && poseObj.rightWrist.score > scoreThreshold && poseObj.rightHip.score > scoreThreshold ){
+     poseObj.rightElbow.angle = find_angle( poseObj.rightShoulder.position, poseObj.rightElbow.position, poseObj.rightWrist.position );
+     drawAngle( ctx, poseObj.rightElbow );
+   }
 
-       ctx.beginPath();
-       ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
-       ctx.lineTo(keypoints[i+1].position.x, keypoints[i+1].position.y);
-       ctx.lineWidth = lineWidth;
-       ctx.strokeStyle = 'blue';
-       ctx.stroke();
-     }
-   });
+
 
    const adjacentKeyPoints =
        posenet.getAdjacentKeyPoints(keypoints, minConfidence);
@@ -133,6 +160,8 @@ export function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
          toTuple(keypoints[0].position), toTuple(keypoints[1].position), color,
          scale, ctx);
    });
+
+
  }
 
  export function find_angle(A,B,C) {
