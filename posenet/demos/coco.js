@@ -29,40 +29,49 @@ import {
 
 // clang-format on
 
-
 const images = [
-  'frisbee.jpg',
-  'frisbee_2.jpg',
-  'backpackman.jpg',
-  'boy_doughnut.jpg',
-  'soccer.png',
-  'with_computer.jpg',
-  'snowboard.jpg',
-  'person_bench.jpg',
-  'skiing.jpg',
-  'fire_hydrant.jpg',
-  'kyte.jpg',
-  'looking_at_computer.jpg',
-  'tennis.jpg',
-  'tennis_standing.jpg',
-  'truck.jpg',
-  'on_bus.jpg',
-  'tie_with_beer.jpg',
-  'baseball.jpg',
-  'multi_skiing.jpg',
-  'riding_elephant.jpg',
-  'skate_park_venice.jpg',
-  'skate_park.jpg',
-  'tennis_in_crowd.jpg',
-  'two_on_bench.jpg',
+  'mountain.jpg',
+  'mt1.jpg',
+  'mt2.jpg',
+  'stand.jpg',
+  'Standing-Half-Moon.jpg',
+  'warrior-2.jpg',
+  'warrior-standing.jpg'
 ];
+
+// const images = [
+//   'frisbee.jpg',
+//   'frisbee_2.jpg',
+//   'backpackman.jpg',
+//   'boy_doughnut.jpg',
+//   'soccer.png',
+//   'with_computer.jpg',
+//   'snowboard.jpg',
+//   'person_bench.jpg',
+//   'skiing.jpg',
+//   'fire_hydrant.jpg',
+//   'kyte.jpg',
+//   'looking_at_computer.jpg',
+//   'tennis.jpg',
+//   'tennis_standing.jpg',
+//   'truck.jpg',
+//   'on_bus.jpg',
+//   'tie_with_beer.jpg',
+//   'baseball.jpg',
+//   'multi_skiing.jpg',
+//   'riding_elephant.jpg',
+//   'skate_park_venice.jpg',
+//   'skate_park.jpg',
+//   'tennis_in_crowd.jpg',
+//   'two_on_bench.jpg',
+// ];
 
 /**
  * Draws a pose if it passes a minimum confidence onto a canvas.
  * Only the pose's keypoints that pass a minPartConfidence are drawn.
  */
 function drawResults(canvas, poses, minPartConfidence, minPoseConfidence) {
-  renderImageToCanvas(image, [513, 513], canvas);
+  renderImageToCanvas(image, [801, 801], canvas);
   const ctx = canvas.getContext('2d');
   poses.forEach((pose) => {
     if (pose.score >= minPoseConfidence) {
@@ -81,20 +90,21 @@ function drawResults(canvas, poses, minPartConfidence, minPoseConfidence) {
   });
 }
 
-const imageBucket = 'http://localhost:1234/assets/images/';
+const imageBucket = 'https://github.com/justincouch/tfjs-models/tree/master/posenet/images/';
+//'http://localhost:1234/assets/images/';
     //'https://storage.googleapis.com/tfjs-models/assets/posenet/';
 
 async function loadImage(imagePath) {
-  const image = new Image();
-  const promise = new Promise((resolve, reject) => {
-    image.crossOrigin = '';
-    image.onload = () => {
-      resolve(image);
-    };
-  });
-  console.log(imagePath);
-  //image.src = `${imageBucket}${imagePath}`;
-  image.src = `${imagePath}`;
+  // const image = new Image();
+  // const promise = new Promise((resolve, reject) => {
+  //   image.crossOrigin = '';
+  //   image.onload = () => {
+  //     resolve(image);
+  //   };
+  // });
+  // console.log(imagePath);
+  // image.src = `${imageBucket}${imagePath}`;
+  // //image.src = `${imagePath}`;
   return promise;
 }
 
@@ -141,8 +151,8 @@ async function testImageAndEstimatePoses(net) {
   disposePoses();
 
   // Load an example image
-  image = await loadImage(guiState.image);
-
+  //image = await loadImage(guiState.image);
+  image = document.getElementById('warriorImg');
   // Creates a tensor from an image
   const input = tf.browser.fromPixels(image);
 
@@ -188,7 +198,7 @@ const defaultQuantBytes = 2;
 
 const defaultMobileNetMultiplier = isMobile() ? 0.50 : 0.75;
 const defaultMobileNetStride = 16;
-const defaultMobileNetInputResolution = 513;
+const defaultMobileNetInputResolution = 801;
 
 const defaultResNetMultiplier = 1.0;
 const defaultResNetStride = 32;
@@ -203,7 +213,7 @@ let guiState = {
     multiplier: defaultMobileNetMultiplier,
     quantBytes: defaultQuantBytes,
   },
-  image: 'public/images/warrior-standing.jpg',
+  image: 'warrior-standing.jpg',
   multiPoseDetection: {
     minPartConfidence: 0.1,
     minPoseConfidence: 0.2,
@@ -294,7 +304,7 @@ function setupGui(net) {
   }
 
   function updateGui() {
-    updateGuiInputResolution([257, 353, 449, 513, 801]);
+    updateGuiInputResolution([257, 353, 449, 801, 801]);
     if (guiState.model.architecture.includes('ResNet50')) {
       updateGuiOutputStride([32, 16]);
       updateGuiMultiplier([1.0]);

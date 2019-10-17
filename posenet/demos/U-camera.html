@@ -4,6 +4,18 @@
 <head>
     <title>PoseNet - Camera Feed Demo</title>
     <style>
+        #main{
+          width: 50%;
+          float:  left;
+        }
+        #other{
+          width: 50%;
+          float: right;
+        }
+        #other img{
+          width: 100%;
+          height: auto;
+        }
         .footer {
             position: fixed;
             left: 0;
@@ -83,7 +95,7 @@
         </div>
         <div class="sk-spinner sk-spinner-pulse"></div>
     </div>
-    <div id='main' style='display:none'>
+    <div id='main'>
         <video id="video" playsinline style=" -moz-transform: scaleX(-1);
         -o-transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
@@ -93,7 +105,15 @@
         </video>
         <canvas id="output" />
     </div>
-    
+    <div id="other">
+      <img src="/assets/results/1.jpg"/>
+      <img src="/assets/results/2.jpg"/>
+      <img src="/assets/results/3.jpg"/>
+      <img src="/assets/results/4.jpg"/>
+      <img src="/assets/results/5.jpg"/>
+      <img src="/assets/results/6.jpg"/>
+    </div>
+
     <script src="U-camera.js"></script>
 </body>
 

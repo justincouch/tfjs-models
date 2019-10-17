@@ -20,8 +20,8 @@ import Stats from 'stats.js';
 
 import {drawBoundingBox, drawKeypoints, drawSkeleton, isMobile, toggleLoadingUI, tryResNetButtonName, tryResNetButtonText, updateTryResNetButtonDatGuiCss} from './demo_util';
 
-const videoWidth = 600;
-const videoHeight = 500;
+let videoWidth = document.getElementById("main").offsetWidth;
+let videoHeight = 500;
 const stats = new Stats();
 
 /**
@@ -71,10 +71,10 @@ const defaultMobileNetInputResolution = 449;
 
 const defaultResNetMultiplier = 1.0;
 const defaultResNetStride = 32;
-const defaultResNetInputResolution = 250;
+const defaultResNetInputResolution = 449;
 
 const guiState = {
-  algorithm: 'multi-pose',
+  algorithm: 'single-pose',
   input: {
     architecture: 'MobileNetV1',
     outputStride: defaultMobileNetStride,
@@ -212,13 +212,13 @@ function setupGui(cameras, net) {
     if (guiState.input.architecture === 'MobileNetV1') {
       updateGuiInputResolution(
           defaultMobileNetInputResolution,
-          [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800]);
+          [161,193,257,289,321,353,385,417,449,481,513,801]);
       updateGuiOutputStride(defaultMobileNetStride, [8, 16]);
       updateGuiMultiplier(defaultMobileNetMultiplier, [0.50, 0.75, 1.0]);
     } else {  // guiState.input.architecture === "ResNet50"
       updateGuiInputResolution(
           defaultResNetInputResolution,
-          [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800]);
+          [161,193,257,289,321,353,385,417,449,481,513,801]);
       updateGuiOutputStride(defaultResNetStride, [32, 16]);
       updateGuiMultiplier(defaultResNetMultiplier, [1.0]);
     }
@@ -273,6 +273,8 @@ function setupGui(cameras, net) {
         break;
     }
   });
+
+  gui.close();
 }
 
 /**
@@ -451,6 +453,12 @@ function detectPoseInRealTime(video, net) {
  * available camera devices, and setting off the detectPoseInRealTime function.
  */
 export async function bindPage() {
+  console.log(document.getElementById("main"));
+  console.log(document.getElementById("main").offsetWidth);
+  videoWidth = document.getElementById("main").offsetWidth;
+  console.log(videoWidth);
+  videoHeight = videoWidth;
+
   toggleLoadingUI(true);
   const net = await posenet.load({
     architecture: guiState.input.architecture,

@@ -95,9 +95,10 @@ export function drawSegment([ay, ax], [by, bx], color, scale, ctx) {
 }
 
 function drawAngle( ctx, poseJoint ){
-  ctx.font = "24px serif";
-  ctx.fillStyle = 'red';
-  ctx.fillText( ( poseJoint.angle*(180/Math.PI) ).toFixed(2), poseJoint.position.x, poseJoint.position.y );
+  // ctx.font = "24px serif";
+  // ctx.fillStyle = 'red';
+  // ctx.textAlign = "center";
+  // ctx.fillText( ( poseJoint.angle*(180/Math.PI) ).toFixed(2), poseJoint.position.x, poseJoint.position.y );
 
   // ctx.beginPath();
   // ctx.moveTo(keypoints[i].position.x, keypoints[i].position.y);
