@@ -24,6 +24,10 @@ let videoWidth = document.getElementById("main").offsetWidth;
 let videoHeight = 500;
 const stats = new Stats();
 
+let switchImageInterval;
+let switchImageCounter = 0;
+const switchImageNumber = 6;
+
 /**
  * Loads a the camera to be used in the demo
  *
@@ -74,7 +78,7 @@ const defaultResNetStride = 32;
 const defaultResNetInputResolution = 449;
 
 const guiState = {
-  algorithm: 'single-pose',
+  algorithm: 'multi-pose',
   input: {
     architecture: 'MobileNetV1',
     outputStride: defaultMobileNetStride,
@@ -457,7 +461,7 @@ export async function bindPage() {
   console.log(document.getElementById("main").offsetWidth);
   videoWidth = document.getElementById("main").offsetWidth;
   console.log(videoWidth);
-  videoHeight = videoWidth;
+  videoHeight = videoWidth-100;
 
   toggleLoadingUI(true);
   const net = await posenet.load({
@@ -484,6 +488,14 @@ export async function bindPage() {
   setupGui([], net);
   setupFPS();
   detectPoseInRealTime(video, net);
+
+  switchImageInterval = setInterval(function(){
+    switchImageCounter += 1;
+    if ( switchImageCounter >= switchImageNumber ) switchImageCounter = 0;
+    //document.getElementsByClassName("poseImage")
+    for (let el of document.querySelectorAll('.poseImage')) el.style.display = 'none';
+    document.getElementById("image-"+switchImageCounter).style.display = 'block';
+  }, 30000);
 }
 
 navigator.getUserMedia = navigator.getUserMedia ||

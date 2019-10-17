@@ -4,6 +4,30 @@
 <head>
     <title>PoseNet - Camera Feed Demo</title>
     <style>
+        @font-face {
+        	font-family: "SF-UI-Text-Regular";
+          font-style: normal;
+          font-weight: 300;
+          src: url("/assets/fonts/SF-UI-Text/SF-UI-Text-Regular.otf") format("opentype"); }
+
+        @font-face {
+          font-family: 'SF-UI-Text-Ultrathin';
+          font-style: normal;
+          font-weight: 100;
+          src: local('SF UI Text Ultrathin'), local('SF UI Text'), url("/assets/fonts/SF-UI-Text/SF-UI-Text-Ultrathin.otf") format('otf');
+        }
+        body{
+          margin:  0px;
+          padding: 0px;
+          text-align: center;
+          font-family: "SF-UI-Text-Ultrathin",sans-serif;
+        }
+        h1{
+          font-size: 3em;
+        }
+        h3{
+          font-size: 2em;
+        }
         #main{
           width: 50%;
           float:  left;
@@ -15,6 +39,13 @@
         #other img{
           width: 100%;
           height: auto;
+        }
+        #topSpacer{
+          width: 100%;
+          height: 160px;
+        }
+        .poseImage{
+          /* position: absolute; */
         }
         .footer {
             position: fixed;
@@ -95,6 +126,10 @@
         </div>
         <div class="sk-spinner sk-spinner-pulse"></div>
     </div>
+    <div id="topSpacer">
+      <h1>Welcome to Yoga Trainer</h1>
+      <h3>Try to match your pose to the one pictured</h3>
+    </div>
     <div id='main'>
         <video id="video" playsinline style=" -moz-transform: scaleX(-1);
         -o-transform: scaleX(-1);
@@ -106,12 +141,12 @@
         <canvas id="output" />
     </div>
     <div id="other">
-      <img src="/assets/results/1.jpg"/>
-      <img src="/assets/results/2.jpg"/>
-      <img src="/assets/results/3.jpg"/>
-      <img src="/assets/results/4.jpg"/>
-      <img src="/assets/results/5.jpg"/>
-      <img src="/assets/results/6.jpg"/>
+      <img id="image-0" class="poseImage" src="/assets/results/1.jpg"/>
+      <img id="image-1" class="poseImage" src="/assets/results/2.jpg"/>
+      <img id="image-2" class="poseImage" src="/assets/results/3.jpg"/>
+      <img id="image-3" class="poseImage" src="/assets/results/4.jpg"/>
+      <img id="image-4" class="poseImage" src="/assets/results/5.jpg"/>
+      <img id="image-5" class="poseImage" src="/assets/results/6.jpg"/>
     </div>
 
     <script src="U-camera.js"></script>
