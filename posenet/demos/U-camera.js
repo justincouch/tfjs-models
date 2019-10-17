@@ -495,7 +495,7 @@ export async function bindPage() {
     //document.getElementsByClassName("poseImage")
     for (let el of document.querySelectorAll('.poseImage')) el.style.display = 'none';
     document.getElementById("image-"+switchImageCounter).style.display = 'block';
-  }, 30000);
+  }, 15000);
 }
 
 navigator.getUserMedia = navigator.getUserMedia ||

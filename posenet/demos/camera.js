@@ -20,8 +20,8 @@ import Stats from 'stats.js';
 
 import {drawBoundingBox, drawKeypoints, drawSkeleton, isMobile, toggleLoadingUI, tryResNetButtonName, tryResNetButtonText, updateTryResNetButtonDatGuiCss} from './demo_util';
 
-const videoWidth = 600;
-const videoHeight = 500;
+let videoWidth = 1100;
+let videoHeight = 900;
 const stats = new Stats();
 
 /**
@@ -280,7 +280,7 @@ function setupGui(cameras, net) {
  */
 function setupFPS() {
   stats.showPanel(0);  // 0: fps, 1: ms, 2: mb, 3+: custom
-  document.getElementById('main').appendChild(stats.dom);
+  //document.getElementById('main').appendChild(stats.dom);
 }
 
 /**
@@ -295,7 +295,7 @@ function detectPoseInRealTime(video, net) {
   // original image and then just flip the keypoints' x coordinates. If instead
   // we flip the image, then correcting left-right keypoint pairs requires a
   // permutation on all the keypoints.
-  const flipPoseHorizontal = true;
+  const flipPoseHorizontal = false;
 
   canvas.width = videoWidth;
   canvas.height = videoHeight;
@@ -414,8 +414,8 @@ function detectPoseInRealTime(video, net) {
 
     if (guiState.output.showVideo) {
       ctx.save();
-      ctx.scale(-1, 1);
-      ctx.translate(-videoWidth, 0);
+      //ctx.scale(1, 1);
+      //ctx.translate(-videoWidth, 0);
       ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
       ctx.restore();
     }
@@ -451,6 +451,10 @@ function detectPoseInRealTime(video, net) {
  * available camera devices, and setting off the detectPoseInRealTime function.
  */
 export async function bindPage() {
+  // videoWidth = document.getElementById("main").offsetWidth;
+  // console.log(videoWidth);
+  // videoHeight = videoWidth-100;
+
   toggleLoadingUI(true);
   const net = await posenet.load({
     architecture: guiState.input.architecture,

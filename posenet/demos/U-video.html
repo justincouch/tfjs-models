@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PoseNet - Camera Feed Demo</title>
+    <style>
+        @font-face {
+        	font-family: "SF-UI-Text-Regular";
+          font-style: normal;
+          font-weight: 300;
+          src: url("/assets/fonts/SF-UI-Text/SF-UI-Text-Regular.otf") format("opentype"); }
+
+        @font-face {
+          font-family: 'SF-UI-Text-Ultrathin';
+          font-style: normal;
+          font-weight: 100;
+          src: local('SF UI Text Ultrathin'), local('SF UI Text'), url("/assets/fonts/SF-UI-Text/SF-UI-Text-Ultrathin.otf") format('otf');
+        }
+        body{
+          margin:  0px;
+          padding: 0px;
+          text-align: center;
+          font-family: "SF-UI-Text-Ultrathin",sans-serif;
+        }
+        h1{
+          font-size: 3em;
+        }
+        h3{
+          font-size: 2em;
+        }
+        #main{
+          width: 50%;
+          float:  left;
+        }
+        #other{
+          width: 50%;
+          float: right;
+        }
+        #other img{
+          width: 100%;
+          height: auto;
+        }
+        #topSpacer{
+          width: 100%;
+          height: 160px;
+        }
+        .poseImage{
+          /* position: absolute; */
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: black;
+        }
+
+        .footer-text {
+            max-width: 600px;
+            text-align: center;
+            margin: auto;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            .footer-text,
+            .dg {
+                display: none;
+            }
+        }
+
+        /*
+         *  The following loading spinner CSS is from SpinKit project
+         *  https://github.com/tobiasahlin/SpinKit
+         */
+        .sk-spinner-pulse {
+            width: 20px;
+            height: 20px;
+            margin: auto 10px;
+            float: left;
+            background-color: #333;
+            border-radius: 100%;
+            -webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
+            animation: sk-pulseScaleOut 1s infinite ease-in-out;
+        }
+
+        @-webkit-keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sk-pulseScaleOut {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+                opacity: 0;
+            }
+        }
+
+        .spinner-text {
+            float: left;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div id="info" style='display:none'>
+    </div>
+    <div id="loading" style='display:flex'>
+        <div class="spinner-text">
+            Loading PoseNet model...
+        </div>
+        <div class="sk-spinner sk-spinner-pulse"></div>
+    </div>
+    <div id="topSpacer">
+      <h1>Welcome to Yoga Trainer</h1>
+      <h3>Try to match your pose to the one pictured</h3>
+    </div>
+    <div id='main'>
+        <video id="video" playsinline style=" -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        
+        ">
+        <source src="/assets/videos/fortnite.mp4" type="video/mp4">
+        </video>
+
+        <canvas id="output" />
+    </div>
+    <div id="other">
+      <img id="image-0" class="poseImage" src="/assets/results/1.jpg"/>
+      <img id="image-1" class="poseImage" src="/assets/results/2.jpg"/>
+      <img id="image-2" class="poseImage" src="/assets/results/3.jpg"/>
+      <img id="image-3" class="poseImage" src="/assets/results/4.jpg"/>
+      <img id="image-4" class="poseImage" src="/assets/results/5.jpg"/>
+      <img id="image-5" class="poseImage" src="/assets/results/6.jpg"/>
+    </div>
+
+    <script src="U-video.js"></script>
+</body>
+
+</html>
